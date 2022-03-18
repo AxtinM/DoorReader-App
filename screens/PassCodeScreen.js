@@ -12,7 +12,7 @@ import ForgottenPassBox2 from "../components/ForgottenPassBox2";
 
 let ScreenHeight = Dimensions.get("window").height;
 
-const PassCodeScreen = () => {
+const PassCodeScreen = ({ navigation }) => {
   return (
     <View style={{ flex: 1, width: "100%" }}>
       <ScrollView style={{ flex: 1 }}>
@@ -20,7 +20,7 @@ const PassCodeScreen = () => {
           <View style={styles.logoTextView}>
             <Text style={styles.logoText}>LOGO</Text>
           </View>
-          <ForgottenPassBox2 />
+          <ForgottenPassBox2 navigation={navigation} />
           <View style={{ flex: 0.2 }}></View>
         </SafeAreaView>
       </ScrollView>

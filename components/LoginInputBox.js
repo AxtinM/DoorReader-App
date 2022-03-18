@@ -1,14 +1,19 @@
-import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Pressable,
+} from "react-native";
 import React from "react";
 import InputBox from "../components/input/InputBox1";
 import Btn from "../components/buttons/Btn1";
-const LoginInputBox = () => {
+const LoginInputBox = ({ navigation }) => {
   return (
     <KeyboardAvoidingView style={styles.container} enabled={true}>
       <View style={styles.container}>
-        <View style={styles.topTextView}>
-          <Text style={styles.topText}>Log in</Text>
-        </View>
+        <Text style={styles.topText}>Log in</Text>
+        <View style={styles.topTextView}></View>
         <View
           style={{
             flex: 0.8,
@@ -31,7 +36,13 @@ const LoginInputBox = () => {
               secureTextEntry={true}
             />
             <View style={styles.middleTextView}>
-              <Text style={styles.middleText}>Forgot Password?</Text>
+              <Pressable
+                onPress={() =>
+                  navigation.navigate("PassStack", { screen: "Email" })
+                }
+              >
+                <Text style={styles.middleText}>Forgot Password?</Text>
+              </Pressable>
             </View>
           </View>
           <View style={styles.bottomView}>
@@ -40,10 +51,11 @@ const LoginInputBox = () => {
               <Text style={{ ...styles.bottomText, color: "#4FBDBA" }}>
                 New to DooReader ?
               </Text>
-
-              <Text style={{ ...styles.bottomText, color: "#BF1363" }}>
-                Sign up
-              </Text>
+              <Pressable onPress={() => navigation.navigate("Register")}>
+                <Text style={{ ...styles.bottomText, color: "#BF1363" }}>
+                  Sign up
+                </Text>
+              </Pressable>
             </View>
           </View>
         </View>

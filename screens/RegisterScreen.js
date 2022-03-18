@@ -12,7 +12,7 @@ import RegisterInputBox from "../components/RegisterInputBox";
 
 let ScreenHeight = Dimensions.get("window").height;
 
-const RegisterScreen = () => {
+const RegisterScreen = ({ navigation }) => {
   return (
     <View style={{ flex: 1, width: "100%" }}>
       <ScrollView style={{ flex: 1 }}>
@@ -20,7 +20,7 @@ const RegisterScreen = () => {
           <View style={styles.logoTextView}>
             <Text style={styles.logoText}>LOGO</Text>
           </View>
-          <RegisterInputBox />
+          <RegisterInputBox navigation={navigation} />
           {/* <View style={{ flex: 0.2 }}></View> */}
         </SafeAreaView>
       </ScrollView>

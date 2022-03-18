@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import InputBox from "../components/input/InputBox1";
 import NextRightBtn from "./buttons/NextRightBtn";
 
-const ForgottenPassBox2 = ({ setScreenState, screenState }) => {
+const ForgottenPassBox2 = ({ navigation }) => {
   //   useEffect(() => {}, [screenState]);
   return (
     <KeyboardAvoidingView style={styles.container} enabled={true}>
@@ -28,8 +28,16 @@ const ForgottenPassBox2 = ({ setScreenState, screenState }) => {
           </View>
         </View>
         <View style={styles.bottomView}>
-          <NextRightBtn name="arrow-circle-left" />
-          <NextRightBtn name="arrow-circle-right" />
+          <NextRightBtn
+            name="arrow-circle-left"
+            navigation={navigation}
+            route="Email"
+          />
+          <NextRightBtn
+            name="arrow-circle-right"
+            navigation={navigation}
+            route="ReTypePass"
+          />
         </View>
       </View>
     </KeyboardAvoidingView>

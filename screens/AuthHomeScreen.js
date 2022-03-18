@@ -23,8 +23,20 @@ const AuthHomeScreen = ({ navigation }) => {
         style={styles.image}
       />
       <View style={styles.bottomContainer}>
-        <Btn text="Log in" color="#4FBDBA" bgColor="#FFFFFF" />
-        <Btn text="Sign up" color="#4FBDBA" bgColor="#FFFFFF" />
+        <Btn
+          text="Log in"
+          color="#4FBDBA"
+          bgColor="#FFFFFF"
+          navigation={navigation}
+          route="Login"
+        />
+        <Btn
+          text="Sign up"
+          color="#4FBDBA"
+          bgColor="#FFFFFF"
+          navigation={navigation}
+          route="Register"
+        />
       </View>
     </SafeAreaView>
   );

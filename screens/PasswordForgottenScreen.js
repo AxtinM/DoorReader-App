@@ -18,7 +18,7 @@ let ScreenHeight = Dimensions.get("window").height;
 //   RESET: "RESET",
 // };
 
-const PasswordForgottenScreen = () => {
+const PasswordForgottenScreen = ({ navigation }) => {
   // const [screenState, setScreenState] = useState(stages.REQUEST_EMAIL);
 
   return (
@@ -28,7 +28,7 @@ const PasswordForgottenScreen = () => {
           <View style={styles.logoTextView}>
             <Text style={styles.logoText}>LOGO</Text>
           </View>
-          <ForgottenPassBox1 />
+          <ForgottenPassBox1 navigation={navigation} />
           <View style={{ flex: 0.2 }}></View>
         </SafeAreaView>
       </ScrollView>

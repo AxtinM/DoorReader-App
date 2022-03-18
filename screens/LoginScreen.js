@@ -11,7 +11,7 @@ import { getStatusBarHeight } from "react-native-status-bar-height";
 import LoginInputBox from "../components/LoginInputBox";
 
 let ScreenHeight = Dimensions.get("window").height;
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   return (
     <View style={{ flex: 1, width: "100%" }}>
       <ScrollView style={{ flex: 1 }}>
@@ -19,7 +19,7 @@ const LoginScreen = () => {
           <View style={styles.logoTextView}>
             <Text style={styles.logoText}>LOGO</Text>
           </View>
-          <LoginInputBox />
+          <LoginInputBox navigation={navigation} />
           <View style={{ flex: 0.2 }}></View>
         </SafeAreaView>
       </ScrollView>

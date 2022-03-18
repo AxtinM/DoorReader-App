@@ -29,8 +29,16 @@ const ForgottenPassBox1 = ({ navigation }) => {
           </View>
         </View>
         <View style={styles.bottomView}>
-          <NextRightBtn name="arrow-circle-left" />
-          <NextRightBtn name="arrow-circle-right" />
+          <NextRightBtn
+            name="arrow-circle-left"
+            navigation={navigation}
+            route="Login"
+          />
+          <NextRightBtn
+            name="arrow-circle-right"
+            navigation={navigation}
+            route="Code"
+          />
         </View>
       </View>
     </KeyboardAvoidingView>

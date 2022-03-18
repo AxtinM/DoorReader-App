@@ -1,9 +1,15 @@
-import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Pressable,
+} from "react-native";
 import React from "react";
 import InputBox from "../components/input/InputBox1";
 import Btn from "../components/buttons/Btn1";
 
-const RegisterInputBox = () => {
+const RegisterInputBox = ({ navigation }) => {
   return (
     <KeyboardAvoidingView style={styles.container} enabled={true}>
       <View style={styles.insideContainer}>
@@ -61,10 +67,11 @@ const RegisterInputBox = () => {
               <Text style={{ ...styles.bottomText, color: "#4FBDBA" }}>
                 You have an account ?
               </Text>
-
-              <Text style={{ ...styles.bottomText, color: "#BF1363" }}>
-                Log in
-              </Text>
+              <Pressable onPress={() => navigation.navigate("Login")}>
+                <Text style={{ ...styles.bottomText, color: "#BF1363" }}>
+                  Log in
+                </Text>
+              </Pressable>
             </View>
           </View>
         </View>

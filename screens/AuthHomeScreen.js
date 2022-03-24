@@ -27,15 +27,17 @@ const AuthHomeScreen = ({ navigation }) => {
           text="Log in"
           color="#4FBDBA"
           bgColor="#FFFFFF"
-          navigation={navigation}
-          route="Login"
+          onPress={() => navigation.navigate("Login")}
+          // navigation={navigation}
+          // route="Login"
         />
         <Btn
           text="Sign up"
           color="#4FBDBA"
           bgColor="#FFFFFF"
-          navigation={navigation}
-          route="Register"
+          onPress={() => navigation.navigate("Register")}
+          // navigation={navigation}
+          // route="Register"
         />
       </View>
     </SafeAreaView>

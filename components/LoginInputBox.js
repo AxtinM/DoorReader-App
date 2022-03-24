@@ -8,58 +8,124 @@ import {
 import React from "react";
 import InputBox from "../components/input/InputBox1";
 import Btn from "../components/buttons/Btn1";
-const LoginInputBox = ({ navigation }) => {
+import { Formik } from "formik";
+import client from "../client";
+import * as yup from "yup";
+import { useContext } from "react";
+
+const LoginSchema = yup.object({
+  email: yup.string().email().required(),
+  password: yup.string().required().min(8).max(24).required(),
+});
+
+const LoginInputBox = ({ navigation, setShowPopup, loginPopup }) => {
+  const { setUser, setToken, token } = useContext(UserContext);
+
+  const login = async (values) => {
+    const res = await client.post("/auth/login", {
+      email: values.email,
+      password: values.password,
+    });
+    const data = await res.data;
+    return data;
+  };
+
   return (
     <KeyboardAvoidingView style={styles.container} enabled={true}>
-      <View style={styles.container}>
-        <Text style={styles.topText}>Log in</Text>
-        <View style={styles.topTextView}></View>
-        <View
-          style={{
-            flex: 0.8,
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <View style={{ flex: 0.5, width: "100%", alignItems: "center" }}>
-            <InputBox
-              label="Address mail :"
-              autoCapitalize="none"
-              keyboardType="email-address"
-            />
-            <InputBox
-              label="Password :"
-              autoComplete="password"
-              autoCapitalize="none"
-              keyboardType="default"
-              secureTextEntry={true}
-            />
-            <View style={styles.middleTextView}>
-              <Pressable
-                onPress={() =>
-                  navigation.navigate("PassStack", { screen: "Email" })
-                }
-              >
-                <Text style={styles.middleText}>Forgot Password?</Text>
-              </Pressable>
-            </View>
-          </View>
-          <View style={styles.bottomView}>
-            <Btn color="#fff" bgColor="#4FBDBA" text="Log in" />
-            <View style={styles.bottomTextView}>
-              <Text style={{ ...styles.bottomText, color: "#4FBDBA" }}>
-                New to DooReader ?
-              </Text>
-              <Pressable onPress={() => navigation.navigate("Register")}>
-                <Text style={{ ...styles.bottomText, color: "#BF1363" }}>
-                  Sign up
+      <Formik
+        initialValues={{ email: "", password: "" }}
+        validationSchema={LoginSchema}
+        onSubmit={async (values, actions) => {
+          try {
+            console.log(values);
+            const res = await login(values);
+            actions.resetForm();
+            if (res.status === true) {
+              setToken(res.jwt);
+              if (token === null) {
+                setTimeout(() => {
+                  console.log(token);
+                }, 200);
+              }
+            } else {
+              throw new Error("Login Failed");
+            }
+          } catch (err) {
+            console.log(err);
+            setShowPopup(true);
+            actions.resetForm();
+          }
+        }}
+      >
+        {(props) => (
+          <View style={styles.container}>
+            <Text style={styles.topText}>Log in</Text>
+            <View style={styles.topTextView}></View>
+            <View
+              style={{
+                flex: 0.8,
+                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <View style={{ flex: 0.5, width: "100%", alignItems: "center" }}>
+                <InputBox
+                  label="Address mail :"
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                  value={props.values.email}
+                  onChangeText={props.handleChange("email")}
+                  onBlur={props.handleBlur("email")}
+                />
+                <Text style={styles.errorMessage}>
+                  {props.touched.email && props.errors.email}
                 </Text>
-              </Pressable>
+                <InputBox
+                  label="Password :"
+                  autoComplete="password"
+                  autoCapitalize="none"
+                  keyboardType="default"
+                  secureTextEntry={true}
+                  value={props.values.password}
+                  onChangeText={props.handleChange("password")}
+                />
+                <Text style={styles.errorMessage}>
+                  {props.touched.password && props.errors.password}
+                </Text>
+
+                <View style={styles.middleTextView}>
+                  <Pressable
+                    onPress={() =>
+                      navigation.navigate("PassStack", { screen: "Email" })
+                    }
+                  >
+                    <Text style={styles.middleText}>Forgot Password?</Text>
+                  </Pressable>
+                </View>
+              </View>
+              <View style={styles.bottomView}>
+                <Btn
+                  color="#fff"
+                  bgColor="#4FBDBA"
+                  text="Log in"
+                  onPress={props.handleSubmit}
+                />
+                <View style={styles.bottomTextView}>
+                  <Text style={{ ...styles.bottomText, color: "#4FBDBA" }}>
+                    New to DooReader ?
+                  </Text>
+                  <Pressable onPress={() => navigation.navigate("Register")}>
+                    <Text style={{ ...styles.bottomText, color: "#BF1363" }}>
+                      Sign up
+                    </Text>
+                  </Pressable>
+                </View>
+              </View>
             </View>
           </View>
-        </View>
-      </View>
+        )}
+      </Formik>
     </KeyboardAvoidingView>
   );
 };
@@ -114,6 +180,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginHorizontal: 3,
     fontSize: 15,
+  },
+  errorMessage: {
+    fontSize: 12,
+    color: "red",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
 

@@ -5,21 +5,30 @@ import {
   View,
   Text,
   StyleSheet,
+  Alert,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import LoginInputBox from "../components/LoginInputBox";
-
 let ScreenHeight = Dimensions.get("window").height;
+
 const LoginScreen = ({ navigation }) => {
+  const [showPopup, setShowPopup] = useState(false);
   return (
     <View style={{ flex: 1, width: "100%" }}>
+      {showPopup === true ? (
+        Alert.alert("Login Failed", "Failed Login,\nPlease try again", [
+          { text: "OK", onPress: () => setShowPopup(false) },
+        ])
+      ) : (
+        <></>
+      )}
       <ScrollView style={{ flex: 1 }}>
         <SafeAreaView style={styles.container}>
           <View style={styles.logoTextView}>
             <Text style={styles.logoText}>LOGO</Text>
           </View>
-          <LoginInputBox navigation={navigation} />
+          <LoginInputBox navigation={navigation} setShowPopup={setShowPopup} />
           <View style={{ flex: 0.2 }}></View>
         </SafeAreaView>
       </ScrollView>

@@ -11,8 +11,8 @@ const NotificationScreen = () => {
 
       <View style={styles.notificationContainer}>
         <View style={styles.notificationInnerContainer}>
-          {arr.map((elem) => (
-            <View style={styles.notification}></View>
+          {arr.map((elem, i) => (
+            <View style={styles.notification} key={i}></View>
           ))}
         </View>
       </View>

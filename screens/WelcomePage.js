@@ -1,13 +1,40 @@
 import { View, Text, StyleSheet, ImageBackground } from "react-native";
-import React from "react";
+import React, {useEffect, useContext} from "react";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import HomeImg from "../assets/home_img.png";
 import TopView from "../components/TopView";
+import client from "../client"
+
+
+const getDevices = async (token) => {
+  try {
+    const res = await client.get('/device/', {
+      headers: {
+        'Authorization': `JWT ${token}`
+      }
+    })
+    const data = await res.data
+    return data
+    
+  } catch (err) {
+    console.log(err)
+  }
+}
 
 const WelcomePage = ({ navigation }) => {
+
+  const { devices, setDevices, token } = useContext(UserContext);
+
+  useEffect(async () => {
+    const res = await getDevices(token);
+    setDevices(res.data)
+  }, [])
+
+  console.log(devices)
+
   return (
     <View style={styles.container}>
-      <TopView />
+      <TopView navigation={navigation} />
       <View style={styles.topView}>
         <View style={styles.middleView}>
           <Text style={styles.middleText}>
@@ -24,12 +51,13 @@ const WelcomePage = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  container:{ 
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     paddingTop: getStatusBarHeight(),
     width: "100%",
+    backgroundColor: "#fff",
   },
   topView: {
     flex: 0.4,

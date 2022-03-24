@@ -8,18 +8,17 @@ import WelcomePage from "./screens/WelcomePage";
 import NotificationScreen from "./screens/NotificationScreen";
 import UsersScreen from "./screens/UsersScreen";
 import UserContext from "./context";
+import ProfileScreen from "./screens/ProfileScreen";
 
 const App = () => {
   const [user, setUser] = useState({});
+  const [devices, setDevices] = useState([]);
   const [token, setToken] = useState(null);
   return (
-    <UserContext.Provider value={{ user, setUser, token, setToken }}>
+    <UserContext.Provider value={{ user, setUser, token, setToken, devices, setDevices }}>
       <NavigationContainer>
-        <AuthNavigation />
+        {token === null ? <AuthNavigation /> : <HomeNavigator />}
       </NavigationContainer>
-      {/* <WelcomePage />
-       <NotificationScreen />
-       <UsersScreen /> */}
     </UserContext.Provider>
   );
 };

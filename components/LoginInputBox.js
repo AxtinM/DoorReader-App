@@ -19,7 +19,7 @@ const LoginSchema = yup.object({
 });
 
 const LoginInputBox = ({ navigation, setShowPopup, loginPopup }) => {
-  const { setUser, setToken, token } = useContext(UserContext);
+  const { setUser, user, setToken, token } = useContext(UserContext);
 
   const login = async (values) => {
     const res = await client.post("/auth/login", {
@@ -42,6 +42,8 @@ const LoginInputBox = ({ navigation, setShowPopup, loginPopup }) => {
             actions.resetForm();
             if (res.status === true) {
               setToken(res.jwt);
+              setUser(res.data)
+              console.log(res)
               if (token === null) {
                 setTimeout(() => {
                   console.log(token);
@@ -132,7 +134,7 @@ const LoginInputBox = ({ navigation, setShowPopup, loginPopup }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.8,
+    flex: 0.9,
     width: "85%",
     height: 300,
     backgroundColor: "#fff",
@@ -140,6 +142,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 45,
     alignSelf: "center",
+    marginTop: 20
   },
   topTextView: {
     flex: 0.1,
@@ -169,12 +172,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   bottomTextView: {
-    flex: 0.55,
+    minHeight: 25,
     flexDirection: "row",
     marginTop: 10,
-    width: "70%",
+    width: "80%",
     justifyContent: "center",
     alignItems: "flex-end",
+    // borderWidth: 1,
   },
   bottomText: {
     textAlign: "center",

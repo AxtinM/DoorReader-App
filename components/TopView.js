@@ -3,12 +3,11 @@ import React from "react";
 import NotificationBtn from "./buttons/NotificationBtn";
 
 const TopView = ({ navigation, label }) => {
-  console.log(label);
   return (
     <View style={styles.logoView}>
       <Text style={styles.logoText}>LOGO</Text>
       {label === undefined ? <></> : <Text style={styles.label}>{label}</Text>}
-      <NotificationBtn />
+      <NotificationBtn navigation={navigation}/>
     </View>
   );
 };
@@ -16,13 +15,15 @@ const TopView = ({ navigation, label }) => {
 const styles = StyleSheet.create({
   logoView: {
     flex: 0.1,
-    height: 70,
+    // height: 70,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-start",
     paddingHorizontal: 30,
     width: "100%",
     // borderWidth: 1,
+    minHeight: 70,
+    maxHeight: 70,
   },
   label: {
     paddingTop: 40,

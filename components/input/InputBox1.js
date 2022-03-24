@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   label: {
-    paddingLeft: 20,
+    paddingLeft: 16,
   },
   labelText: {
     color: "#4FBDBA",

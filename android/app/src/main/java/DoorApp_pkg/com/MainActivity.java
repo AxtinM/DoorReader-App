@@ -9,7 +9,6 @@ import android.os.Bundle;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
-import net.zubricky.AndroidKeyboardAdjust.AndroidKeyboardAdjustPackage;
 
 import expo.modules.ReactActivityDelegateWrapper;
 

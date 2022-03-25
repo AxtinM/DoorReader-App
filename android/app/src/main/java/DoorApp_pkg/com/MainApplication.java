@@ -15,7 +15,6 @@ import com.facebook.soloader.SoLoader;
 
 import expo.modules.ApplicationLifecycleDispatcher;
 import expo.modules.ReactNativeHostWrapper;
-import net.zubricky.AndroidKeyboardAdjust.AndroidKeyboardAdjustPackage;
 import com.facebook.react.bridge.JSIModulePackage;
 
 import java.lang.reflect.InvocationTargetException;

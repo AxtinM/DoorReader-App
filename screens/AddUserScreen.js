@@ -1,69 +1,131 @@
 import { StyleSheet, Text, View, FlatList } from 'react-native'
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import TopView from "../components/TopView"
 import NavigationBtn from "../components/buttons/NavigationBtn";
 import InputBox from "../components/input/InputBox1";
-import Btn from "../components/buttons/Btn1";
+import AccessBtn from "../components/buttons/AccessBtn";
+import AddBtn from "../components/buttons/AddBtn";
+import { Formik } from 'formik';
+import * as yup from "yup";
+import client from "../client"
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { getStatusBarHeight } from 'react-native-status-bar-height';
+
+
+const AddUserSchema = yup.object({
+  identifier: yup.string().min(5).max(5).required()
+})
+
+const addUser = async (token, id, devices) => {
+  try {
+    const res = await client.post("/user/add-id", {identifier: id, devices: [...devices]}, { headers: {'Authorization': `JWT ${token}`}})
+    const data = await res.data
+    return data
+  } catch (err) {
+    console.log(err)
+  }
+}
 
 const AddUserScreen = ({ navigation }) => {
-    
-    const { devices } = useContext(UserContext);
-
-    
-
-    const renderItem = (i) => {
-        console.log("first")
-        console.log(i);
-        return (
-            <Btn BR={10} bgColor="#4FBDBA" color="#FFFFFF" text={`${i.item.deviceName}`} flex={1/3}  />
-        )
+  const { devices, token } = useContext(UserContext);
+  const [selectedDevices, setSelectedDevices] = useState([])
+  const checkItemAdd = (mac, arr) => {
+    try {
+      const check = arr.includes(mac)
+      if (check) {
+        const newArr = arr.filter((elem) => elem !== mac);
+        setSelectedDevices(newArr);
+      } else {
+        setSelectedDevices([...arr, mac]);
+      }
+    } catch (err) {
+      console.log(err);
     }
-    console.log(devices);
+    }
+
+  const renderItem = (i) => {
+      const bgC = selectedDevices.includes(i.item.macAddress)  ? "#4FBDBA" : "#4FBDBA66";
+      return (
+        <AccessBtn  BR={10} bgColor={bgC} color="#FFFFFF" text={`${i.item.deviceName}`}
+                    flex={1 / 3} onPress={() => checkItemAdd(i.item.macAddress, selectedDevices) } />
+      )
+  }
 
   return (
     <View style={styles.container}>
-        <TopView label="List of users" />
+        <TopView navigation={navigation} label="List of users" />
         <View style={styles.topView}>
-            <NavigationBtn label="< DooReaders" />
-          </View>
+        <NavigationBtn navigation={navigation} label="< DooReaders" />
+      </View>
+      <Formik
+        initialValues={{ name: "", identifier: "" }}
+        validationSchema={AddUserSchema}
+        onSubmit={async (values, actions) => {          
+          // console.log("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
+          // console.log(values);
+          // console.log("---------------------------Devices---------------------------")
+          // console.log(selectedDevices);
+          try {
+            const identifier = "U" + values.identifier;
+            const res = await addUser(token, identifier, selectedDevices)
+            console.log("---------------------------RESPONSE---------------------------")
+            console.log(res);
+          } catch (err) {
+            console.log("---------------------------ERROR---------------------------")
+            console.log(err);
+          }
+
+        }}
+        >
+        {(props) => (
+          <>
+            <KeyboardAwareScrollView style={{
+              flex: 0.25
+            }}>
           <View
                 style={{
-                    flex: 0.4,
-                    width: "100%",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                  flex: 1,
+                  width: "100%",
+                  justifyContent: "space-between",
+                  alignItems: "center",
                 }}>
                 <InputBox
                   label="Name :"
                   autoCapitalize="none"
                   keyboardType="default"
                   placeholder="name"
-                />
-                <InputBox
-                  label="Surname :"
-                  autoCapitalize="none"
-                  keyboardType="default"
-                  placeholder="surname"
-                />
-                <InputBox
-                  label="Address mail :"
-                  autoCapitalize="none"
-                  keyboardType="email-address"
-                  placeholder="exmpl@gmail.com"
-                />
-          </View>
-          <View style={styles.bottomView}>
-              <View style={styles.bottomInnerTopView}>
-                  <Text style={styles.textBottom}>Access to :</Text>
-                  <FlatList
-                    data={devices}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item._id}
-                    // extraData={selectedId}
-                    numColumns={3}
+                  value={props.values.name}
+                  onChangeText={props.handleChange("name")}
                   />
-              </View>
-          </View>
+                <InputBox
+                  label="Identifier :"
+                  autoCapitalize="none"
+                  keyboardType="numeric"
+                  placeholder="345672"
+                  value={props.values.identifier}
+                  onChangeText={props.handleChange("identifier")}
+                  onBlur={props.handleBlur("identifier")}
+                  />
+              <Text style={styles.errorMessage}>
+                  {props.touched.identifier && props.errors.identifier}
+                </Text>
+            </View>
+                  </KeyboardAwareScrollView>
+              <View style={styles.bottomView}>
+                  <View style={styles.bottomInnerTopView}>
+                      <Text style={styles.textBottom}>Access to :</Text>
+                      <FlatList
+                        data={devices}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item._id}
+                        extraData={selectedDevices}
+                        numColumns={3}
+                      />
+                  </View>
+                  </View>
+                  <AddBtn onPress={props.handleSubmit} />
+          </>)}
+      </Formik>
     </View>
   )
 }
@@ -75,7 +137,9 @@ const styles = StyleSheet.create({
         flex: 1,
         width: "100%",
         justifyContent: "center",
-        alignItems: "center"
+    alignItems: "center",
+    paddingTop: getStatusBarHeight(),
+        
     },
     topView: {
         flex: 0.08,
@@ -85,11 +149,11 @@ const styles = StyleSheet.create({
         // borderWidth: 1,
     },
     bottomView: {
-        flex: 0.3,
+        flex: 1,
         width: "100%",
         justifyContent: "flex-start",
-        alignItems: "center"
-
+        alignItems: "center",
+        marginTop: 20,
     },
     bottomInnerTopView: {
         width: "80%",
@@ -99,5 +163,9 @@ const styles = StyleSheet.create({
     textBottom: {
         fontSize: 16,
         color: "#4FBDBA",
-    }
+  },
+  errorMessage: {
+    color: "red",
+    fontSize: 12,
+  }
 })

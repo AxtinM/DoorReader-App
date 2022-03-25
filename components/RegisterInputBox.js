@@ -15,10 +15,28 @@ import * as yup from "yup";
 const RegisterSchema = yup.object({
   name: yup.string().min(3).max(18).required(),
   surname: yup.string().min(2).max(18).required(),
-  // phone: yup.string().min(6).max(20).required(),
   email: yup.string().email().required(),
   password: yup.string().required().min(8).max(24).required(),
 });
+
+const register = async (values) => {
+  try {
+    const fname = values.name;
+    const lname     = values.surname;
+    const email     = values.email;
+    const password  = values.password;
+    
+    const res = await client.post("/auth/register", { fname, lname, email, password });
+    const data = await res.data;
+    
+    return data
+    
+  } catch (err) {
+    console.log("---------------------ERROR---------------------");
+    console.log(err)
+  }
+
+}
 
 const RegisterInputBox = ({ navigation }) => {
   return (
@@ -35,29 +53,20 @@ const RegisterInputBox = ({ navigation }) => {
             password: "",
           }}
           validationSchema={RegisterSchema}
-          onSubmit={(values, actions) => {
-            // try {
-            console.log(values);
-            console.log("first");
-            actions.resetForm();
-            //   const res = await login(values);
-            //   actions.resetForm();
-            //   if (res.status === true) {
-            //     setToken(res.jwt);
-            //     if (token === null) {
-            //       setTimeout(() => {
-            //         console.log(token);
-            //       }, 200);
-            //     }
-            //   } else {
-            //     throw new Error("Login Failed");
-            //   }
-            // } catch (err) {
-            //   console.log(err);
-            //   setShowPopup(true);
-            //   actions.resetForm();
-            // }
-          }}
+          onSubmit={async (values, actions) => {
+            try {
+              console.log(values);
+              actions.resetForm();
+              const res = await register(values);
+              if (res.status === true) {
+                actions.resetForm();
+              }
+            } catch (err) {
+              console.log("---------------------ERROR---------------------");
+              console.log(err);
+            }
+          }
+          }
         >
           {(props) => (
             <View

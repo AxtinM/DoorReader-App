@@ -4,7 +4,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 const NotificationBtn = ({ navigation, route }) => {
   return (
     <TouchableOpacity style={styles.container}
-      onPress={() => {navigation.navigate("Notification")}}
+      onPress={() => navigation.navigate("Notification")}
     >
       <Icon name="bell-o" size={20} color="#fff" />
     </TouchableOpacity>

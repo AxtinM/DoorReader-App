@@ -1,8 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import React from "react";
 // bgColor, color, text, navigation, route
-const Btn1 = (props) => {
-  const { flex ,bgColor, color, text, ...data } = props;
+const AccessBtn = (props) => {
+  const { BR, flex ,bgColor, color, text, ...data } = props;
   return (
     <TouchableOpacity
       style={{ ...styles.container, backgroundColor: bgColor}}
@@ -14,12 +14,13 @@ const Btn1 = (props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    height: 40,
-    width: 110,
-    borderRadius: 30,
-    marginVertical: 10,
-    justifyContent: "center",
+    container: {
+      flex: 1/3,
+        height: 40,
+        width: 85,
+        marginVertical: 10,
+        justifyContent: "center",
+        marginHorizontal: 5,
   },
   text: {
     textAlign: "center",
@@ -27,4 +28,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Btn1;
+export default AccessBtn;

@@ -38,9 +38,9 @@ const UsersScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <TopView label="List of users" />
+      <TopView navigation={navigation} label="List of users" />
       <View style={styles.topView}>
-        <NavigationBtn label="< DooReaders" />
+        <NavigationBtn navigation={navigation} label="< DooReaders" />
       </View>
       <View style={styles.usersContainer}>
         <ScrollView style={styles.usersScroll}>

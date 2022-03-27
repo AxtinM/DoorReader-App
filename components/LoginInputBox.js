@@ -39,11 +39,14 @@ const LoginInputBox = ({ navigation, setShowPopup, loginPopup }) => {
           try {
             console.log(values);
             const res = await login(values);
+            console.log(
+              "---------------------------LoggedIn---------------------------"
+            );
+            console.log(res);
             actions.resetForm();
             if (res.status === true) {
               setToken(res.jwt);
-              setUser(res.data)
-              console.log(res)
+              setUser(res.data);
               if (token === null) {
                 setTimeout(() => {
                   console.log(token);
@@ -142,7 +145,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 45,
     alignSelf: "center",
-    marginTop: 20
+    marginTop: 20,
   },
   topTextView: {
     flex: 0.1,

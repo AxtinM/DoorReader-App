@@ -1,9 +1,10 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 
-const navigationBtn = ({ label }) => {
+const navigationBtn = (props) => {
+  const { label, ...data } = props;
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity {...data} style={styles.container}>
       <Text style={styles.text}>{label}</Text>
     </TouchableOpacity>
   );

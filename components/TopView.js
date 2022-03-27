@@ -7,14 +7,14 @@ const TopView = ({ navigation, label }) => {
     <View style={styles.logoView}>
       <Text style={styles.logoText}>LOGO</Text>
       {label === undefined ? <></> : <Text style={styles.label}>{label}</Text>}
-      <NotificationBtn navigation={navigation}/>
+      <NotificationBtn navigation={navigation} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   logoView: {
-    flex: 0.1,
+    flex: 0.15,
     // height: 70,
     flexDirection: "row",
     justifyContent: "space-between",

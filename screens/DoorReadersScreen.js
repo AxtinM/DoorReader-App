@@ -7,9 +7,9 @@ import UserContainer from "../components/UserContainer";
 import Btn1 from "../components/buttons/Btn1";
 import client from "../client";
 
-const getUsers = async (token) => {
+const gerReaders = async (token) => {
   try {
-    const res = await client.get("/user/", {
+    const res = await client.get("/device/", {
       headers: {
         Authorization: `JWT ${token}`,
       },
@@ -21,28 +21,25 @@ const getUsers = async (token) => {
   }
 };
 
-const UsersScreen = ({ navigation }) => {
+const DoorReadersScreen = ({ navigation }) => {
   const { token } = useContext(UserContext);
-  const [users, setUsers] = useState([]);
+  const [readers, setReaders] = useState([]);
   const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   useEffect(async () => {
-    const res = await getUsers(token);
+    const res = await gerReaders(token);
     console.log(res);
-  }, [users]);
+  }, [readers]);
 
   return (
     <View style={styles.container}>
-      <TopView navigation={navigation} label="List of users" />
+      <TopView navigation={navigation} label="List of DoorReaders" />
       <View style={styles.topView}>
-        <NavigationBtn
-          onPress={() => navigation.navigate("DoorReaders")}
-          label="< DooReaders"
-        />
+        <NavigationBtn onPress={() => navigation.goBack()} label="Users >" />
       </View>
       <View style={styles.usersContainer}>
         <ScrollView style={styles.usersScroll}>
-          {users.map((user, index) => (
+          {/* {users.map((user, index) => (
             <View
               key={index}
               style={{
@@ -68,16 +65,14 @@ const UsersScreen = ({ navigation }) => {
                 <></>
               )}
             </View>
-          ))}
+          ))} */}
         </ScrollView>
         <View style={styles.bottomUsersContainer}>
           <Btn1
             text="add"
-            navigation={navigation}
-            route="AddUser"
             color="#fff"
             bgColor="#BF1363"
-            onPress={() => navigation.navigate("AddUser")}
+            onPress={() => navigation.navigate("AddDoorReader")}
           />
         </View>
       </View>
@@ -85,7 +80,7 @@ const UsersScreen = ({ navigation }) => {
   );
 };
 
-export default UsersScreen;
+export default DoorReadersScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -100,8 +95,8 @@ const styles = StyleSheet.create({
     flex: 0.08,
     width: "100%",
     justifyContent: "center",
-    paddingLeft: 22,
-    // borderWidth: 1,
+    alignItems: "flex-end",
+    paddingRight: 22,
   },
   usersContainer: {
     flex: 0.8,

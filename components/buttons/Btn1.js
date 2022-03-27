@@ -1,11 +1,12 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import React from "react";
 // bgColor, color, text, navigation, route
+
 const Btn1 = (props) => {
-  const { flex ,bgColor, color, text, ...data } = props;
+  const { bgColor, color, text, ...data } = props;
   return (
     <TouchableOpacity
-      style={{ ...styles.container, backgroundColor: bgColor}}
+      style={{ ...styles.container, backgroundColor: bgColor }}
       {...data}
     >
       <Text style={{ ...styles.text, color: color }}>{text}</Text>

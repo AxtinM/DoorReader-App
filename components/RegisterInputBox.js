@@ -22,21 +22,24 @@ const RegisterSchema = yup.object({
 const register = async (values) => {
   try {
     const fname = values.name;
-    const lname     = values.surname;
-    const email     = values.email;
-    const password  = values.password;
-    
-    const res = await client.post("/auth/register", { fname, lname, email, password });
+    const lname = values.surname;
+    const email = values.email;
+    const password = values.password;
+
+    const res = await client.post("/auth/register", {
+      fname,
+      lname,
+      email,
+      password,
+    });
     const data = await res.data;
-    
-    return data
-    
+
+    return data;
   } catch (err) {
     console.log("---------------------ERROR---------------------");
-    console.log(err)
+    console.log(err);
   }
-
-}
+};
 
 const RegisterInputBox = ({ navigation }) => {
   return (
@@ -65,8 +68,7 @@ const RegisterInputBox = ({ navigation }) => {
               console.log("---------------------ERROR---------------------");
               console.log(err);
             }
-          }
-          }
+          }}
         >
           {(props) => (
             <View

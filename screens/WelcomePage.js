@@ -8,12 +8,13 @@ import client from "../client"
 
 const getDevices = async (token) => {
   try {
-    const res = await client.get('/device/', {
+    const res = await client.get("/device/", {
       headers: {
-        'Authorization': `JWT ${token}`
-      }
+        Authorization: `JWT ${token}`,
+      },
     })
     const data = await res.data
+    console.log(data);
     return data
     
   } catch (err) {
@@ -21,16 +22,31 @@ const getDevices = async (token) => {
   }
 }
 
+const getUsers = async (token) => {
+  try {
+    const res = await client.get("/user/", {
+      headers: {
+        Authorization: `JWT ${token}`,
+      },
+    });
+    const data = await res.data;
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const WelcomePage = ({ navigation }) => {
 
-  const { devices, setDevices, token } = useContext(UserContext);
+  const { setDevices, token, setUsers } = useContext(UserContext);
 
   useEffect(async () => {
-    const res = await getDevices(token);
-    setDevices(res.data)
+    console.log("object");
+    const devices = await getDevices(token);
+    const users = await getUsers(token);
+    setUsers(users.data);
+    setDevices(devices.data);
   }, [])
-
-  console.log(devices)
 
   return (
     <View style={styles.container}>

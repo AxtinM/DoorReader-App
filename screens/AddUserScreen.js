@@ -19,7 +19,7 @@ const addUser = async (token, id, devices) => {
   try {
     const res = await client.post(
       "/user/add-id",
-      { identifier: id, devices: [...devices] },
+      { identifier: id, devices },
       { headers: { Authorization: `JWT ${token}` } }
     );
     const data = await res.data;
@@ -30,7 +30,7 @@ const addUser = async (token, id, devices) => {
 };
 
 const AddUserScreen = ({ navigation }) => {
-  const { devices, token, user } = useContext(UserContext);
+  const { devices, token, user, setUsers } = useContext(UserContext);
   console.log("user : ", user);
   const [selectedDevices, setSelectedDevices] = useState([]);
   const checkItemAdd = (mac, arr) => {
@@ -65,7 +65,7 @@ const AddUserScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <TopView navigation={navigation} label="List of users" />
+      <TopView navigation={navigation} label="Add User" />
       <View style={styles.topView}>
         <NavigationBtn
           onPress={() => navigation.navigate("AddDoorReader")}
@@ -78,8 +78,8 @@ const AddUserScreen = ({ navigation }) => {
         onSubmit={async (values, actions) => {
           // console.log("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
           // console.log(values);
-          // console.log("---------------------------Devices---------------------------")
-          // console.log(selectedDevices);
+          console.log("---------------------------Devices---------------------------")
+          console.log(selectedDevices);
           try {
             const identifier = "U" + values.identifier;
             const res = await addUser(token, identifier, selectedDevices);
@@ -87,6 +87,7 @@ const AddUserScreen = ({ navigation }) => {
               "---------------------------RESPONSE---------------------------"
             );
             console.log(res);
+            setUsers()
           } catch (err) {
             console.log(
               "---------------------------ERROR---------------------------"

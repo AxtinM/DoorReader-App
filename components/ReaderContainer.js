@@ -1,33 +1,30 @@
 import { StyleSheet, Text, View, Switch } from "react-native";
 import React, { useState } from "react";
-import IconAnt from "react-native-vector-icons/AntDesign";
-import IconFont from "react-native-vector-icons/FontAwesome5";
+import IconFeather from "react-native-vector-icons/Feather";
 
-const UserContainer = ({ name, doors }) => {
+const ReaderContainer = ({ name, mac }) => {
   const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+//   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
   return (
     <View style={styles.container}>
       <View style={styles.topView}>
-        <IconAnt
-          name="deleteuser"
-          style={styles.icon}
-          size={20}
-          color="#FE354D"
-        />
-        <IconFont name="user-circle" size={30} color="#61dafb" />
       </View>
       <Text>{name}</Text>
-      <Text>He has access to :</Text>
+      <Text>Mac Address :</Text>
       <View style={styles.accessStyle}>
-        {typeof doors[0].deviceName === "string" ? <Text>{doors[0].deviceName}</Text> : <></>}
-        {typeof doors[1].deviceName === "string" ? <Text>{doors[1].deviceName}</Text> : <></>}
+        <Text>{mac}</Text>
       </View>
+        <IconFeather
+          name="trash"
+          style={styles.icon}
+          size={15}
+          color="#FE354D"
+        />
     </View>
   );
 };
 
-export default UserContainer;
+export default ReaderContainer;
 
 const styles = StyleSheet.create({
   container: {
@@ -50,8 +47,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: "absolute",
-    top: 5,
-    left: 5,
+    bottom: 5,
+    // left: 5,
   },
   accessStyle: {
     width: "100%",

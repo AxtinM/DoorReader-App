@@ -12,10 +12,11 @@ import ProfileScreen from "./screens/ProfileScreen";
 
 const App = () => {
   const [user, setUser] = useState({});
+  const [users, setUsers] = useState([]);
   const [devices, setDevices] = useState([]);
   const [token, setToken] = useState(null);
   return (
-    <UserContext.Provider value={{ user, setUser, token, setToken, devices, setDevices }}>
+    <UserContext.Provider value={{ user, setUser, users, setUsers, token, setToken, devices, setDevices }}>
       <NavigationContainer>
         {token === null ? <AuthNavigation /> : <HomeNavigator />}
       </NavigationContainer>

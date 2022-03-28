@@ -18,8 +18,8 @@ const LoginSchema = yup.object({
   password: yup.string().required().min(8).max(24).required(),
 });
 
-const LoginInputBox = ({ navigation, setShowPopup, loginPopup }) => {
-  const { setUser, user, setToken, token } = useContext(UserContext);
+const LoginInputBox = ({ navigation, setShowPopup }) => {
+  const { setUser, setToken, token } = useContext(UserContext);
 
   const login = async (values) => {
     const res = await client.post("/auth/login", {

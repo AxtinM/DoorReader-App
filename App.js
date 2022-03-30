@@ -1,22 +1,18 @@
-import { View, Text, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import React, { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AuthNavigation from "./navigation/AuthNavigation";
-import ForgottenPassNavigation from "./navigation/ForgottenPassNavigation";
 import HomeNavigator from "./navigation/HomeNavigator";
-import WelcomePage from "./screens/WelcomePage";
-import NotificationScreen from "./screens/NotificationScreen";
-import UsersScreen from "./screens/UsersScreen";
 import UserContext from "./context";
-import ProfileScreen from "./screens/ProfileScreen";
 
 const App = () => {
   const [user, setUser] = useState({});
   const [users, setUsers] = useState([]);
+  const [tags, setTags] = useState([]);
   const [devices, setDevices] = useState([]);
   const [token, setToken] = useState(null);
   return (
-    <UserContext.Provider value={{ user, setUser, users, setUsers, token, setToken, devices, setDevices }}>
+    <UserContext.Provider value={{ user, setUser, users, setUsers, token, setToken, devices, setDevices, tags, setTags }}>
       <NavigationContainer>
         {token === null ? <AuthNavigation /> : <HomeNavigator />}
       </NavigationContainer>

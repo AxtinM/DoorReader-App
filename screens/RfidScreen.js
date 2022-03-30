@@ -4,32 +4,32 @@ import { getStatusBarHeight } from "react-native-status-bar-height";
 import TopView from "../components/TopView";
 import NavigationBtn from "../components/buttons/NavigationBtn";
 import ReaderContainer from "../components/ReaderContainer";
+import CardContainer from "../components/CardContainer";
 import Btn1 from "../components/buttons/Btn1";
 
 
-const DoorReadersScreen = ({ navigation }) => {
-  const { devices } = useContext(UserContext);
-  const [readers, setReaders] = useState([]);
+const RfidScreen = ({ navigation }) => {
+  const { tags } = useContext(UserContext);
 
-  useEffect(() => {
-    setReaders(devices)
-  }, [devices]);
+//   useEffect(() => {
+//     setTags(tags)
+//   }, [tags]);
 
   const renderItem = (i) => {
     return (
-      <ReaderContainer name={i.item.deviceName} mac={i.item.macAddress} />
+      <CardContainer tag={i.item.tagId} />
     )
   }
 
   return (
     <View style={styles.container}>
-      <TopView navigation={navigation} label="List of DoorReaders" />
+      <TopView navigation={navigation} label="List of rfid cards" />
       <View style={styles.topView}>
-        <NavigationBtn onPress={() => navigation.goBack()} label="Users >" />
+        <NavigationBtn onPress={() => navigation.goBack()} label="< DooReaders" />
       </View>
       <View style={styles.usersContainer}>
         <FlatList style={{ marginBottom: 10 }}
-          data={readers}
+          data={tags}
           renderItem={renderItem}
           keyExtractor={(item) => item._id}
           numColumns={2}
@@ -40,14 +40,14 @@ const DoorReadersScreen = ({ navigation }) => {
             text="add"
             color="#fff"
             bgColor="#BF1363"
-            onPress={() => navigation.navigate("AddDoorReader")}
+            onPress={() => navigation.navigate("addRfid")}
           />
         </View>
     </View>
   );
 };
 
-export default DoorReadersScreen;
+export default RfidScreen;
 
 const styles = StyleSheet.create({
   container: {

@@ -7,7 +7,9 @@ import AddUserScreen from "../screens/AddUserScreen";
 import ChangeUserAccess from "../screens/ChangeUserAccess";
 import DoorReadersScreen from "../screens/DoorReadersScreen";
 import AddDoorReaderNextScreen from "../screens/AddDoorReaderNextScreen";
+import RfidScreen from "../screens/RfidScreen";
 import AddDoorReaderScreen from "../screens/AddDoorReaderScreen";
+import AddRfidCard from "../screens/AddRfidCard";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Image } from "react-native";
@@ -32,6 +34,14 @@ const DoorReadersView = ({ navigation }) => {
   return (
     <>
       <DoorReadersScreen navigation={navigation} />
+    </>
+  );
+};
+
+const RfidView = ({ navigation }) => {
+  return (
+    <>
+      <RfidScreen navigation={navigation} />
     </>
   );
 };
@@ -83,6 +93,15 @@ const AddDoorReaderNextView = ({ navigation, route }) => {
     </>
   );
 };
+
+const AddRfidCardView = ({ navigation }) => {
+  return (
+    <>
+      <AddRfidCard navigation={navigation} />
+    </>
+  );
+};
+
 const MainStack = createBottomTabNavigator();
 const UserStack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -131,6 +150,7 @@ const AddDRNavigation = () => {
         component={AddDoorReaderNextView}
         options={profileOptions}
       />
+      
     </DoorReaderStack.Navigator>
   );
 };
@@ -168,13 +188,17 @@ const UserDoorNavigation = () => {
         component={UserNavigation}
         options={profileOptions}
       />
-
-      {/* <UserDoorStack.Screen
-        name="AddUser"
-        component={AddUserView}
-        options={{ headerShown: false }}
+      <UserDoorStack.Screen
+        name="addRfid"
+        component={AddRfidCardView}
+        options={profileOptions}
       />
       <UserDoorStack.Screen
+        name="Rfid"
+        component={RfidView}
+        options={{ headerShown: false }}
+      />
+      {/*<UserDoorStack.Screen
         name="ChangeUser"
         component={ChangeUserView}
         options={{ headerShown: false }}

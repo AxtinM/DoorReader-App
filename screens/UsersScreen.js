@@ -5,11 +5,32 @@ import TopView from "../components/TopView";
 import NavigationBtn from "../components/buttons/NavigationBtn";
 import UserContainer from "../components/UserContainer";
 import Btn1 from "../components/buttons/Btn1";
+import client from "../client";
+
+const getRfidCards = async (token) => {
+  try {
+    const res = await client.get("/rfid/", { headers: {
+          Authorization: `JWT ${token}`,
+        },
+      }
+    )
+    const data = await res.data;
+    
+    return data;
+
+  } catch (err) {
+    console.log(err)
+  }
+}
 
 const UsersScreen = ({ navigation }) => {
-  const { devices, users } = useContext(UserContext);
-
+  const { devices, users, token, setTags } = useContext(UserContext);
+  
   useEffect(() => {}, [users]);
+  useEffect(async () => {
+    const data = await getRfidCards(token);
+    setTags(data.rfidTags)
+  }, [])
 
   const renderItem = (i) => {
     const doorNames = [...devices.slice(0, 2)];
@@ -31,6 +52,10 @@ const UsersScreen = ({ navigation }) => {
         <NavigationBtn
           onPress={() => navigation.navigate("DoorReaders")}
           label="< DooReaders"
+        />
+        <NavigationBtn
+          onPress={() => navigation.navigate("Rfid")}
+          label="Rfid >"
         />
       </View>
       <View style={styles.usersContainer}>
@@ -72,8 +97,11 @@ const styles = StyleSheet.create({
   topView: {
     flex: 0.08,
     width: "100%",
-    justifyContent: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    // alignItems: "space-between",
     paddingLeft: 22,
+    paddingRight: 22,
     // borderWidth: 1,
   },
   usersContainer: {

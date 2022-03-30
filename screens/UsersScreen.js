@@ -1,24 +1,28 @@
 import { StyleSheet, View, FlatList } from "react-native";
-import React, { useState, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import TopView from "../components/TopView";
 import NavigationBtn from "../components/buttons/NavigationBtn";
 import UserContainer from "../components/UserContainer";
 import Btn1 from "../components/buttons/Btn1";
 
-
-
 const UsersScreen = ({ navigation }) => {
-  const { token, devices } = useContext(UserContext);
-  const [users, setUsers] = useState([]);
+  const { devices, users } = useContext(UserContext);
+
+  useEffect(() => {}, [users]);
 
   const renderItem = (i) => {
-    const doorNames = [...devices.slice(0, 2)]
-    console.log(doorNames); 
+    const doorNames = [...devices.slice(0, 2)];
+    console.log(i.item);
     return (
-      <UserContainer name={`${i.item.fname} ${i.item.lname}`} doors={doorNames} />
-    )
-  }
+      <UserContainer
+        name={`${i.item.fname} ${i.item.lname}`}
+        doors={doorNames}
+        identifier={i.item.identifier}
+        navigation={navigation}
+      />
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -30,7 +34,8 @@ const UsersScreen = ({ navigation }) => {
         />
       </View>
       <View style={styles.usersContainer}>
-      <FlatList style={styles.usersScroll}
+        <FlatList
+          style={styles.usersScroll}
           data={users}
           renderItem={renderItem}
           keyExtractor={(item) => item._id}
@@ -43,7 +48,9 @@ const UsersScreen = ({ navigation }) => {
             route="AddUser"
             color="#fff"
             bgColor="#BF1363"
-            onPress={() => navigation.navigate("AddUser")}
+            onPress={() =>
+              navigation.navigate("AddChange", { screens: "AddUser" })
+            }
           />
         </View>
       </View>

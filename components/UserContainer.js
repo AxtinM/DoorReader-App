@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View, Switch } from "react-native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 import React, { useState } from "react";
 import IconAnt from "react-native-vector-icons/AntDesign";
 import IconFont from "react-native-vector-icons/FontAwesome5";
 
-const UserContainer = ({ name, doors }) => {
+const UserContainer = ({ name, doors, identifier, navigation }) => {
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
   return (
@@ -15,13 +15,33 @@ const UserContainer = ({ name, doors }) => {
           size={20}
           color="#FE354D"
         />
-        <IconFont name="user-circle" size={30} color="#61dafb" />
+        <Pressable
+          onPress={() => {
+            navigation.navigate("AddChange", {
+              screen: "ChangeUser",
+              params: {
+                identifier: identifier,
+                lolipop: "hey",
+              },
+            });
+          }}
+        >
+          <IconFont name="user-circle" size={30} color="#61dafb" />
+        </Pressable>
       </View>
       <Text>{name}</Text>
       <Text>He has access to :</Text>
       <View style={styles.accessStyle}>
-        {typeof doors[0].deviceName === "string" ? <Text>{doors[0].deviceName}</Text> : <></>}
-        {typeof doors[1].deviceName === "string" ? <Text>{doors[1].deviceName}</Text> : <></>}
+        {typeof doors[0].deviceName === "string" ? (
+          <Text>{doors[0].deviceName}</Text>
+        ) : (
+          <></>
+        )}
+        {typeof doors[1].deviceName === "string" ? (
+          <Text>{doors[1].deviceName}</Text>
+        ) : (
+          <></>
+        )}
       </View>
     </View>
   );

@@ -79,7 +79,7 @@ const AddDoorReaderScreen = ({ navigation }) => {
                     bgColor="#4FBDBA"
                     text="Next"
                     onPress={props.handleSubmit}
-                  ></Btn>
+                  />
                 </View>
               </View>
             </View>

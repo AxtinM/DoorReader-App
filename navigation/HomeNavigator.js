@@ -4,6 +4,7 @@ import UsersScreen from "../screens/UsersScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import AddUserScreen from "../screens/AddUserScreen";
+import ChangeUserAccess from "../screens/ChangeUserAccess";
 import DoorReadersScreen from "../screens/DoorReadersScreen";
 import AddDoorReaderNextScreen from "../screens/AddDoorReaderNextScreen";
 import AddDoorReaderScreen from "../screens/AddDoorReaderScreen";
@@ -59,6 +60,14 @@ const AddUserView = ({ navigation }) => {
   );
 };
 
+const ChangeUserView = ({ navigation }) => {
+  return (
+    <>
+      <ChangeUserAccess navigation={navigation} />
+    </>
+  );
+};
+
 const AddDoorReaderView = ({ navigation }) => {
   return (
     <>
@@ -74,8 +83,8 @@ const AddDoorReaderNextView = ({ navigation, route }) => {
     </>
   );
 };
-
 const MainStack = createBottomTabNavigator();
+const UserStack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
 const UserDoorStack = createNativeStackNavigator();
 const DoorReaderStack = createNativeStackNavigator();
@@ -126,19 +135,50 @@ const AddDRNavigation = () => {
   );
 };
 
-const UserDoorNavigation = () => {
+const UserNavigation = () => {
   return (
-    <UserDoorStack.Navigator initialRouteName="Users" screenOptions={options}>
-      <UserDoorStack.Screen
-        name="Users"
-        component={UsersView}
-        options={profileOptions}
-      />
-      <UserDoorStack.Screen
+    <UserStack.Navigator screenOptions={profileOptions}>
+      <UserStack.Screen
         name="AddUser"
         component={AddUserView}
         options={{ headerShown: false }}
       />
+      <UserStack.Screen
+        name="ChangeUser"
+        component={ChangeUserView}
+        options={{ headerShown: false }}
+      />
+    </UserStack.Navigator>
+  );
+};
+
+const UserDoorNavigation = () => {
+  return (
+    <UserDoorStack.Navigator
+      initialRouteName="MainUsers"
+      screenOptions={options}
+    >
+      <UserDoorStack.Screen
+        name="MainUsers"
+        component={UsersView}
+        options={profileOptions}
+      />
+      <UserDoorStack.Screen
+        name="AddChange"
+        component={UserNavigation}
+        options={profileOptions}
+      />
+
+      {/* <UserDoorStack.Screen
+        name="AddUser"
+        component={AddUserView}
+        options={{ headerShown: false }}
+      />
+      <UserDoorStack.Screen
+        name="ChangeUser"
+        component={ChangeUserView}
+        options={{ headerShown: false }}
+      /> */}
       <UserDoorStack.Screen
         name="DoorReaders"
         component={DoorReadersView}

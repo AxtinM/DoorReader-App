@@ -6,15 +6,13 @@ import InputBox from "../components/input/InputBox1";
 import Btn from "../components/buttons/Btn1";
 import { Formik } from "formik";
 import * as yup from "yup";
-import client from "../client";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 
 const AddDoorSchema = yup.object({
   name: yup.string().min(3).max(10).required(),
 });
 
-const AddDoorReaderScreen = ({ navigation }) => {
+const AddDoorReaderScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <TopView navigation={navigation} label="Add DoorReaders" />

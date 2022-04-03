@@ -10,16 +10,35 @@ import {
 import React, { useState } from "react";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import LoginInputBox from "../components/LoginInputBox";
+
+import AwesomeAlert from "react-native-awesome-alerts";
+
 let ScreenHeight = Dimensions.get("window").height;
 
 const LoginScreen = ({ navigation }) => {
   const [showPopup, setShowPopup] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   return (
     <View style={{ flex: 1, width: "100%" }}>
       {showPopup === true ? (
-        Alert.alert("Login Failed", "Failed Login,\nPlease try again", [
-          { text: "OK", onPress: () => setShowPopup(false) },
-        ])
+        <AwesomeAlert
+          show={showPopup}
+          showProgress={false}
+          title="Login Failed"
+          message={errorMessage}
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={false}
+          showCancelButton={true}
+          showConfirmButton={false}
+          cancelText="cancel"
+          confirmButtonColor="#DD6B55"
+          onCancelPressed={() => {
+            setShowPopup(false);
+          }}
+          onConfirmPressed={() => {
+            setShowPopup(false);
+          }}
+        />
       ) : (
         <></>
       )}
@@ -28,7 +47,11 @@ const LoginScreen = ({ navigation }) => {
           <View style={styles.logoTextView}>
             <Text style={styles.logoText}>LOGO</Text>
           </View>
-          <LoginInputBox navigation={navigation} setShowPopup={setShowPopup} />
+          <LoginInputBox
+            navigation={navigation}
+            setShowPopup={setShowPopup}
+            setErrorMessage={setErrorMessage}
+          />
           <View style={{ flex: 0.2 }}></View>
         </SafeAreaView>
       </ScrollView>

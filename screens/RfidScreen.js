@@ -3,46 +3,46 @@ import React, { useEffect, useState, useContext } from "react";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import TopView from "../components/TopView";
 import NavigationBtn from "../components/buttons/NavigationBtn";
-import ReaderContainer from "../components/ReaderContainer";
 import CardContainer from "../components/CardContainer";
 import Btn1 from "../components/buttons/Btn1";
 
-
 const RfidScreen = ({ navigation }) => {
   const { tags } = useContext(UserContext);
-
-//   useEffect(() => {
-//     setTags(tags)
-//   }, [tags]);
+  const [rfids, setRfids] = useState([tags]);
+  useEffect(() => {
+    setRfids(tags);
+  }, [tags]);
 
   const renderItem = (i) => {
-    return (
-      <CardContainer tag={i.item.tagId} />
-    )
-  }
+    return <CardContainer tag={i.item.tagId} />;
+  };
 
   return (
     <View style={styles.container}>
       <TopView navigation={navigation} label="List of rfid cards" />
       <View style={styles.topView}>
-        <NavigationBtn onPress={() => navigation.goBack()} label="< DooReaders" />
+        <NavigationBtn
+          onPress={() => navigation.goBack()}
+          label="< DooReaders"
+        />
       </View>
       <View style={styles.usersContainer}>
-        <FlatList style={{ marginBottom: 10 }}
-          data={tags}
+        <FlatList
+          style={{ marginBottom: 10 }}
+          data={rfids}
           renderItem={renderItem}
           keyExtractor={(item) => item._id}
           numColumns={2}
         />
       </View>
-        <View style={styles.bottomUsersContainer}>
-          <Btn1
-            text="add"
-            color="#fff"
-            bgColor="#BF1363"
-            onPress={() => navigation.navigate("addRfid")}
-          />
-        </View>
+      <View style={styles.bottomUsersContainer}>
+        <Btn1
+          text="add"
+          color="#fff"
+          bgColor="#BF1363"
+          onPress={() => navigation.navigate("addRfid")}
+        />
+      </View>
     </View>
   );
 };

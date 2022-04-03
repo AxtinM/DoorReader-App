@@ -9,36 +9,36 @@ import client from "../client";
 
 const getRfidCards = async (token) => {
   try {
-    const res = await client.get("/rfid/", { headers: {
-          Authorization: `JWT ${token}`,
-        },
-      }
-    )
+    const res = await client.get("/rfid/", {
+      headers: {
+        Authorization: `JWT ${token}`,
+      },
+    });
     const data = await res.data;
-    
-    return data;
 
+    return data;
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
-}
+};
 
 const UsersScreen = ({ navigation }) => {
-  const { devices, users, token, setTags } = useContext(UserContext);
-  
+  const { users, token, setTags } = useContext(UserContext);
+
   useEffect(() => {}, [users]);
+
   useEffect(async () => {
     const data = await getRfidCards(token);
-    setTags(data.rfidTags)
-  }, [])
+    setTags(data.rfidTags);
+  }, []);
 
   const renderItem = (i) => {
-    const doorNames = [...devices.slice(0, 2)];
-    console.log(i.item);
+    const doorNames = i.item.accessibleDevices;
     return (
       <UserContainer
         name={`${i.item.fname} ${i.item.lname}`}
-        doors={doorNames}
+        firstDoor={doorNames[0]}
+        secondDoor={doorNames[1]}
         identifier={i.item.identifier}
         navigation={navigation}
       />
@@ -47,7 +47,7 @@ const UsersScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <TopView navigation={navigation} label="List of users" />
+      <TopView navigation={navigation} label="List of Users" />
       <View style={styles.topView}>
         <NavigationBtn
           onPress={() => navigation.navigate("DoorReaders")}
@@ -66,18 +66,18 @@ const UsersScreen = ({ navigation }) => {
           keyExtractor={(item) => item._id}
           numColumns={2}
         />
-        <View style={styles.bottomUsersContainer}>
-          <Btn1
-            text="add"
-            navigation={navigation}
-            route="AddUser"
-            color="#fff"
-            bgColor="#BF1363"
-            onPress={() =>
-              navigation.navigate("AddChange", { screens: "AddUser" })
-            }
-          />
-        </View>
+      </View>
+      <View style={styles.bottomUsersContainer}>
+        <Btn1
+          text="add"
+          navigation={navigation}
+          route="AddUser"
+          color="#fff"
+          bgColor="#BF1363"
+          onPress={() =>
+            navigation.navigate("AddChange", { screens: "AddUser" })
+          }
+        />
       </View>
     </View>
   );
@@ -99,23 +99,21 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
-    // alignItems: "space-between",
     paddingLeft: 22,
     paddingRight: 22,
-    // borderWidth: 1,
   },
   usersContainer: {
     flex: 0.8,
     width: "85%",
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
+    backgroundColor: "#E5E5E5",
   },
   bottomUsersContainer: {
     flex: 0.1,
-    minHeight: 50,
-    justifyContent: "flex-start",
+    minHeight: 30,
+    justifyContent: "center",
     alignItems: "center",
     marginTop: 10,
-    // borderWidth:1
   },
 });

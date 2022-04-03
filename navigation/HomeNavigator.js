@@ -70,10 +70,10 @@ const AddUserView = ({ navigation }) => {
   );
 };
 
-const ChangeUserView = ({ navigation }) => {
+const ChangeUserView = ({ navigation, route }) => {
   return (
     <>
-      <ChangeUserAccess navigation={navigation} />
+      <ChangeUserAccess navigation={navigation} route={route} />
     </>
   );
 };
@@ -150,14 +150,16 @@ const AddDRNavigation = () => {
         component={AddDoorReaderNextView}
         options={profileOptions}
       />
-      
     </DoorReaderStack.Navigator>
   );
 };
 
 const UserNavigation = () => {
   return (
-    <UserStack.Navigator screenOptions={profileOptions}>
+    <UserStack.Navigator
+      screenOptions={profileOptions}
+      initialRouteName="AddUser"
+    >
       <UserStack.Screen
         name="AddUser"
         component={AddUserView}
@@ -198,11 +200,6 @@ const UserDoorNavigation = () => {
         component={RfidView}
         options={{ headerShown: false }}
       />
-      {/*<UserDoorStack.Screen
-        name="ChangeUser"
-        component={ChangeUserView}
-        options={{ headerShown: false }}
-      /> */}
       <UserDoorStack.Screen
         name="DoorReaders"
         component={DoorReadersView}

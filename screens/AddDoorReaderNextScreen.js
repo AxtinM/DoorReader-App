@@ -23,6 +23,7 @@ const AddDoorSchema = yup.object({
 
 const AddDoorReaderNextScreen = ({ navigation, route }) => {
   const { token } = useContext(UserContext);
+  console.log(route);
   return (
     <View style={styles.container}>
       <TopView navigation={navigation} label="Add DoorReaders" />

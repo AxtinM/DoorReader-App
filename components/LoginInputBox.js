@@ -4,6 +4,7 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Pressable,
+  Alert,
 } from "react-native";
 import React from "react";
 import InputBox from "../components/input/InputBox1";
@@ -18,7 +19,7 @@ const LoginSchema = yup.object({
   password: yup.string().required().min(8).max(24).required(),
 });
 
-const LoginInputBox = ({ navigation, setShowPopup }) => {
+const LoginInputBox = ({ navigation, setShowPopup, setErrorMessage }) => {
   const { setUser, setToken, token } = useContext(UserContext);
 
   const login = async (values) => {
@@ -37,28 +38,14 @@ const LoginInputBox = ({ navigation, setShowPopup }) => {
         validationSchema={LoginSchema}
         onSubmit={async (values, actions) => {
           try {
-            console.log(values);
             const res = await login(values);
-            console.log(
-              "---------------------------LoggedIn---------------------------"
-            );
-            console.log(res);
             actions.resetForm();
-            if (res.status === true) {
-              setToken(res.jwt);
-              setUser(res.data);
-              if (token === null) {
-                setTimeout(() => {
-                  console.log(token);
-                }, 200);
-              }
-            } else {
-              throw new Error("Login Failed");
-            }
+            setToken(res.jwt);
+            setUser(res.data);
           } catch (err) {
-            console.log(err);
-            setShowPopup(true);
+            setErrorMessage(err);
             actions.resetForm();
+            setShowPopup(true);
           }
         }}
       >

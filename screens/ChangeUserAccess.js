@@ -5,30 +5,31 @@ import NavigationBtn from "../components/buttons/NavigationBtn";
 import AccessBtn from "../components/buttons/AccessBtn";
 import Btn from "../components/buttons/Btn1";
 import client from "../client";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { getStatusBarHeight } from "react-native-status-bar-height";
+import AwesomeAlert from "react-native-awesome-alerts";
 
 const changeUser = async (token, id, devices) => {
   try {
-    const res = await client.post(
+    const res = await client.put(
       "/user/change",
       { identifier: id, devices },
       { headers: { Authorization: `JWT ${token}` } }
     );
     const data = await res.data;
-    return data;
+    console.log(data);
+    return data.access;
   } catch (err) {
     console.log(err);
   }
 };
 
-const ChangeUserAccess = ({ navigation, route }) => {
-  const { devices, token, user, setUsers } = useContext(UserContext);
-  console.log("user : ", user);
+const ChangeUserAccess = ({ navigation, route: { params } }) => {
+  const { devices, token, setUsers, users } = useContext(UserContext);
   const [selectedDevices, setSelectedDevices] = useState([]);
-  // console.log("route : ", route);
+  const [showPopup, setShowPopup] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  // const { identifier } = route.params;
+  const { identifier } = params;
 
   const checkItemAdd = (mac, arr) => {
     try {
@@ -62,6 +63,24 @@ const ChangeUserAccess = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <AwesomeAlert
+        show={showPopup}
+        showProgress={false}
+        title="User Access Error"
+        message={errorMessage}
+        closeOnTouchOutside={true}
+        closeOnHardwareBackPress={false}
+        showCancelButton={true}
+        showConfirmButton={false}
+        cancelText="cancel"
+        confirmButtonColor="#DD6B55"
+        onCancelPressed={() => {
+          setShowPopup(false);
+        }}
+        onConfirmPressed={() => {
+          setShowPopup(false);
+        }}
+      />
       <TopView navigation={navigation} label="Change User Access" />
       <View style={styles.topView}>
         <NavigationBtn
@@ -92,7 +111,26 @@ const ChangeUserAccess = ({ navigation, route }) => {
           color="#fff"
           bgColor="#C4C4C4"
           text="Confirm"
-          onPress={() => changeUser(token, identifier, selectedDevices)}
+          onPress={async () => {
+            try {
+              const accessibleDevicesUpdated = await changeUser(
+                token,
+                identifier,
+                selectedDevices
+              );
+              const updatedUsers = users.map((user) => {
+                if (user.identifier === identifier) {
+                  user.accessibleDevices = accessibleDevicesUpdated;
+                }
+                return user;
+              });
+              setUsers(updatedUsers);
+              navigation.goBack();
+            } catch (err) {
+              setShowPopup(true);
+              setErrorMessage(err.message);
+            }
+          }}
         />
       </View>
     </View>
@@ -135,7 +173,8 @@ const styles = StyleSheet.create({
   bottomView: {
     flex: 0.2,
     width: "100%",
-    justifyContent: "flex-start",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
     alignItems: "center",
     marginTop: 20,
   },

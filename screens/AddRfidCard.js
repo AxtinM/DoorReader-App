@@ -7,7 +7,6 @@ import Btn from "../components/buttons/Btn1";
 import { Formik } from "formik";
 import * as yup from "yup";
 import client from "../client";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 
 const AddRfidSchema = yup.object({
@@ -15,34 +14,36 @@ const AddRfidSchema = yup.object({
 });
 
 const addRfid = async (token, tagId) => {
-    const res   = await client.post("/rfid/add", {tagId: tagId}, {headers: {Authorization: `JWT ${token}`}});
-    const data = await res.data;
-    return data.newTag
-} 
+  const res = await client.post(
+    "/rfid/add",
+    { tagId: tagId },
+    { headers: { Authorization: `JWT ${token}` } }
+  );
+  const data = await res.data;
+  return data.newTag;
+};
 
 const AddDoorReaderScreen = ({ navigation }) => {
-    const { tags, setTags, token } = useContext(UserContext);
+  const { tags, setTags, token } = useContext(UserContext);
   return (
     <View style={styles.container}>
       <TopView navigation={navigation} label="Add Rfid Card" />
       <View style={styles.topView}>
-        {/* <NavigationBtn
-          onPress={() => navigation.navigate("AddUser")}
-          label="Users >"
-        /> */}
-          </View>
-            <Formik
-                initialValues={{ number: "" }}
-                validationSchema={AddRfidSchema}
-              onSubmit={async (values, action) => {
-                    console.log("object");
-                    const newTag = await addRfid(token, values.number);
-                  setTags(...tags, newTag);
-                  console.log("first")
-                    console.log(newTag)
-                    // actions.resetForm();
-                }}
-            >
+        <NavigationBtn
+          onPress={() => navigation.navigate("AddChange")}
+          label="< Users"
+        />
+      </View>
+      <Formik
+        initialValues={{ number: "" }}
+        validationSchema={AddRfidSchema}
+        onSubmit={async (values, action) => {
+          const newTag = await addRfid(token, values.number);
+          setTags([...tags, newTag]);
+          action.resetForm();
+          navigation.goBack();
+        }}
+      >
         {(props) => (
           <>
             <View

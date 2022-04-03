@@ -36,7 +36,6 @@ const register = async (values) => {
 
     return data;
   } catch (err) {
-    console.log("---------------------ERROR---------------------");
     console.log(err);
   }
 };
@@ -58,14 +57,12 @@ const RegisterInputBox = ({ navigation }) => {
           validationSchema={RegisterSchema}
           onSubmit={async (values, actions) => {
             try {
-              console.log(values);
               actions.resetForm();
               const res = await register(values);
               if (res.status === true) {
                 actions.resetForm();
               }
             } catch (err) {
-              console.log("---------------------ERROR---------------------");
               console.log(err);
             }
           }}

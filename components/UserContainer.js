@@ -1,28 +1,59 @@
 import { StyleSheet, Text, View, Pressable } from "react-native";
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import IconAnt from "react-native-vector-icons/AntDesign";
 import IconFont from "react-native-vector-icons/FontAwesome5";
+import client from "../client";
 
-const UserContainer = ({ name, doors, identifier, navigation }) => {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+const deleteUser = async (token, id) => {
+  try {
+    const res = await client.post(
+      "/user/remove",
+      { identifier: id },
+      { headers: { Authorization: `JWT ${token}` } }
+    );
+    const data = await res.data;
+    return data.deletedUser;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const UserContainer = ({
+  name,
+  firstDoor,
+  secondDoor,
+  identifier,
+  navigation,
+}) => {
+  const { token, users, setUsers } = useContext(UserContext);
+  console.log("firstDoor", firstDoor);
+  console.log("secondDoor", secondDoor);
+
   return (
     <View style={styles.container}>
       <View style={styles.topView}>
-        <IconAnt
-          name="deleteuser"
+        <Pressable
           style={styles.icon}
-          size={20}
-          color="#FE354D"
-        />
+          onPress={async () => {
+            const deletedUser = await deleteUser(token, identifier);
+            const updatedUsers = users.filter(
+              (user) => user._id !== deletedUser._id
+            );
+            setUsers(updatedUsers);
+          }}
+        >
+          <IconAnt
+            name="deleteuser"
+            // style={styles.icon}
+            size={20}
+            color="#FE354D"
+          />
+        </Pressable>
         <Pressable
           onPress={() => {
             navigation.navigate("AddChange", {
               screen: "ChangeUser",
-              params: {
-                identifier: identifier,
-                lolipop: "hey",
-              },
+              params: { identifier },
             });
           }}
         >
@@ -32,13 +63,13 @@ const UserContainer = ({ name, doors, identifier, navigation }) => {
       <Text>{name}</Text>
       <Text>He has access to :</Text>
       <View style={styles.accessStyle}>
-        {typeof doors[0].deviceName === "string" ? (
-          <Text>{doors[0].deviceName}</Text>
+        {firstDoor !== undefined ? (
+          <Text>{firstDoor.deviceName}</Text>
         ) : (
-          <></>
+          <Text style={styles.noAccessStyle}>No access</Text>
         )}
-        {typeof doors[1].deviceName === "string" ? (
-          <Text>{doors[1].deviceName}</Text>
+        {secondDoor !== undefined ? (
+          <Text>{secondDoor.deviceName}</Text>
         ) : (
           <></>
         )}
@@ -79,5 +110,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     alignItems: "flex-start",
     // borderWidth: 1,
+  },
+  noAccessStyle: {
+    color: "#FE354D",
+    fontSize: 13,
   },
 });

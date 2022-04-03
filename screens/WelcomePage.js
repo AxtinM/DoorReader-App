@@ -1,30 +1,13 @@
 import { View, Text, StyleSheet, ImageBackground } from "react-native";
-import React, {useEffect, useContext} from "react";
+import React, { useEffect, useContext } from "react";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import HomeImg from "../assets/home_img.png";
 import TopView from "../components/TopView";
-import client from "../client"
-
+import client from "../client";
 
 const getDevices = async (token) => {
   try {
     const res = await client.get("/device/", {
-      headers: {
-        Authorization: `JWT ${token}`,
-      },
-    })
-    const data = await res.data
-    console.log(data);
-    return data
-    
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-const getUsers = async (token) => {
-  try {
-    const res = await client.get("/user/", {
       headers: {
         Authorization: `JWT ${token}`,
       },
@@ -36,17 +19,30 @@ const getUsers = async (token) => {
   }
 };
 
-const WelcomePage = ({ navigation }) => {
+const getUsers = async (token) => {
+  try {
+    const res = await client.get("/user/", {
+      headers: {
+        Authorization: `JWT ${token}`,
+      },
+    });
+    const data = await res.data;
+    console.log(data);
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
 
+const WelcomePage = ({ navigation }) => {
   const { setDevices, token, setUsers } = useContext(UserContext);
 
   useEffect(async () => {
-    console.log("object");
     const devices = await getDevices(token);
     const users = await getUsers(token);
     setUsers(users.data);
     setDevices(devices.data);
-  }, [])
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -67,7 +63,7 @@ const WelcomePage = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container:{ 
+  container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

@@ -11,8 +11,22 @@ const App = () => {
   const [tags, setTags] = useState([]);
   const [devices, setDevices] = useState([]);
   const [token, setToken] = useState(null);
+  // const [isLoading, setIsLoading] = useState(null);
   return (
-    <UserContext.Provider value={{ user, setUser, users, setUsers, token, setToken, devices, setDevices, tags, setTags }}>
+    <UserContext.Provider
+      value={{
+        user,
+        setUser,
+        users,
+        setUsers,
+        token,
+        setToken,
+        devices,
+        setDevices,
+        tags,
+        setTags,
+      }}
+    >
       <NavigationContainer>
         {token === null ? <AuthNavigation /> : <HomeNavigator />}
       </NavigationContainer>

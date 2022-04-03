@@ -31,7 +31,6 @@ const addUser = async (token, id, devices) => {
 
 const AddUserScreen = ({ navigation }) => {
   const { devices, token, user, setUsers } = useContext(UserContext);
-  console.log("user : ", user);
   const [selectedDevices, setSelectedDevices] = useState([]);
   const checkItemAdd = (mac, arr) => {
     try {
@@ -71,27 +70,20 @@ const AddUserScreen = ({ navigation }) => {
           onPress={() => navigation.navigate("AddDoorReader")}
           label="< DooReaders"
         />
+        <NavigationBtn
+          onPress={() => navigation.navigate("addRfid")}
+          label="Rfid >"
+        />
       </View>
       <Formik
         initialValues={{ name: "", identifier: "" }}
         validationSchema={AddUserSchema}
         onSubmit={async (values, actions) => {
-          // console.log("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
-          // console.log(values);
-          console.log("---------------------------Devices---------------------------")
-          console.log(selectedDevices);
           try {
             const identifier = "U" + values.identifier;
             const res = await addUser(token, identifier, selectedDevices);
-            console.log(
-              "---------------------------RESPONSE---------------------------"
-            );
-            console.log(res);
-            setUsers()
+            setUsers();
           } catch (err) {
-            console.log(
-              "---------------------------ERROR---------------------------"
-            );
             console.log(err);
           }
         }}
@@ -164,11 +156,12 @@ const styles = StyleSheet.create({
     paddingTop: getStatusBarHeight(),
   },
   topView: {
-    flex: 0.08,
+    flex: 0.1,
     width: "100%",
-    justifyContent: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingLeft: 22,
-    // borderWidth: 1,
+    paddingRight: 22,
   },
   bottomView: {
     flex: 1,
